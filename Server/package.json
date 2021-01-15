@@ -1,0 +1,19 @@
+{
+  "name": "cone-pack",
+  "version": "1.0.0",
+  "description": "RESTful API for culculating vertices of cone",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Julia Vylegzhanina",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "three": "^0.124.0"
+  }
+}
