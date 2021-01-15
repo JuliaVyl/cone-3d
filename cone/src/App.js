@@ -1,10 +1,13 @@
-import "./App.css";
-import InputForm from "./input-form/InputForm";
+import { useState } from 'react';
+import './App.css';
+import ConeArea from './cone-area/ConeArea';
+import InputForm from './input-form/InputForm';
 
 function App() {
   return (
     <div>
       <InputForm />
+      <ConeArea />
     </div>
   );
 }
