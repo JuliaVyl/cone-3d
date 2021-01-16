@@ -1,8 +1,7 @@
 .input-group {
   max-width: 600px;
   min-width: 300px;
-  margin: auto;
-  margin-top: 50px;
+  margin: 30px auto;
 }
 .input-form {
   display: flex;
@@ -11,7 +10,7 @@
   width: 100%;
   /* border: 1px solid rgb(214, 214, 214); */
   padding: 20px;
-  background-color: #fff;
+  background-color: rgb(142, 143, 150);
 }
 .input-form__height,
 .input-form__radius,
