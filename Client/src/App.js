@@ -1,12 +1,10 @@
 import './App.css';
-import ConeArea from './cone-area/ConeArea';
-import InputForm from './input-form/InputForm';
+import ConePage from './cone-page/ConePage';
 
 function App() {
   return (
     <div>
-      <InputForm />
-      <ConeArea />
+      <ConePage />
     </div>
   );
 }

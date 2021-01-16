@@ -33,27 +33,37 @@ class ConeArea extends Component {
     //start animation
     this.start();
 
-    const mousemoveHandler = (e) => {
-      this.cone.rotation.y += e.movementX / 100;
-      this.cone.rotation.z += e.movementY / 100;
-    };
+    window.addEventListener('mousedown', this.addEventHandler);
 
-    window.addEventListener('mousedown', () => {
-      window.addEventListener('mousemove', mousemoveHandler);
-    });
-
-    window.addEventListener('mouseup', () => {
-      window.removeEventListener('mousemove', mousemoveHandler);
-    });
+    window.addEventListener('mouseup', this.removeEventHandler);
   }
+  addEventHandler = () => {
+    window.addEventListener('mousemove', this.mousemoveHandler);
+  };
+  removeEventHandler = () => {
+    window.removeEventListener('mousemove', this.mousemoveHandler);
+  };
+  mousemoveHandler = (e) => {
+    this.cone.rotation.y += e.movementX / 100;
+    this.cone.rotation.z += e.movementY / 100;
+  };
   addModels = () => {
-    const geometry = new ConeGenerator(5, 2, 20).getGeometry();
+    const { height, radius, segments } = this.props.parameters;
+    const { bottomTriangles, edges } = this.props.vertices;
+
+    const geometry = new ConeGenerator(height, radius, segments).getGeometry(
+      bottomTriangles,
+      edges
+    );
     const material = new THREE.MeshPhongMaterial({ color: 0x44ff44 });
     this.cone = new THREE.Mesh(geometry, material);
     this.scene.add(this.cone);
   };
   componentWillUnmount() {
     this.stop();
+    window.removeEventListener('mousedown', this.addEventHandler);
+
+    window.removeEventListener('mouseup', this.removeEventHandler);
     document.body.removeChild(this.renderer.domElement);
   }
   start = () => {

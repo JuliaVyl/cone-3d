@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import ConeArea from '../cone-area/ConeArea';
 import './input-form.css';
 
-const InputForm = () => {
-  const [height, setHeight] = useState('');
-  const [radius, setRadius] = useState('');
-  const [segments, setSegments] = useState('');
-
-  let coordinates = [];
+const ConePage = () => {
+  const [height, setHeight] = useState(4);
+  const [radius, setRadius] = useState(2);
+  const [segments, setSegments] = useState(14);
+  const [coordinates, setCoordinates] = useState(null);
 
   const handleChange = (f) => (e) => {
     f(e.target.value);
@@ -27,48 +27,59 @@ const InputForm = () => {
 
   const onSendData = async (e) => {
     e.preventDefault();
-    const data = await fetchApi();
+    setCoordinates(null);
+    const coordinates = await fetchApi();
+    setCoordinates(coordinates);
   };
 
   return (
     <div className='input-group'>
       <form className='input-form' onSubmit={onSendData}>
+        <label className='input-form__text'>Высота конуса:</label>
         <input
           className='input-form__height'
-          type='number'
-          min='1'
-          max='100'
+          type='range'
+          min='0.001'
+          max='7.000'
           name='height'
           value={height}
-          placeholder='Введите высоту конуса'
           onChange={handleChange(setHeight)}
           required
         ></input>
+
+        <label className='input-form__text'>Радиус основания конуса:</label>
         <input
           className='input-form__radius'
-          type='number'
-          min='1'
-          max='100'
+          type='range'
+          min='0.001'
+          max='8.000'
           name='radius'
           value={radius}
-          placeholder='Введите радиус основания конуса'
           onChange={handleChange(setRadius)}
           required
         ></input>
+
+        <label className='input-form__text'>Количество сегментов конуса:</label>
         <input
           className='input-form__segments'
-          type='number'
+          type='range'
           min='3'
-          max='150'
+          max='100'
           value={segments}
           name='segments'
-          placeholder='Введите количество сегментов конуса'
           onChange={handleChange(setSegments)}
           required
         ></input>
         <button className='input-form__btn'>Построить</button>
       </form>
+
+      {coordinates && (
+        <ConeArea
+          vertices={coordinates}
+          parameters={{ height, radius, segments }}
+        />
+      )}
     </div>
   );
 };
-export default InputForm;
+export default ConePage;

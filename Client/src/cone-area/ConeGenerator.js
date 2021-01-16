@@ -34,59 +34,28 @@ export class ConeGenerator {
    * Возвращает готовую фигуру
    * @return {THREE.Geometry}
    */
-  getGeometry() {
+  getGeometry(traiglesBottom, edges) {
     const geometry = new THREE.Geometry();
-    const bottomVertices = this.computeBottomVertices(
-      this.segments,
-      this.radius
-    );
-    const vertices3d = this.get3dVertices(bottomVertices);
+    const vertices3d = this.get3dVertices(edges);
     geometry.vertices.push(...vertices3d);
-    const vertices2d = this.get2dVertices(bottomVertices);
+
     const segmentFaces = this.getSegmentFace(this.segments);
-    const bottomFaces = this.getBottomFace(vertices2d);
+    const bottomFaces = this.getBottomFace(traiglesBottom);
     geometry.faces.push(...segmentFaces, ...bottomFaces);
     geometry.computeFaceNormals();
     return geometry;
   }
   /**
-   * Возвращает массив с координатами основания конуса
-   * @param {number} n Количество сегментов конуса
-   * @param {number} r Радиус конуса
-   * @return {number[][]}
-   */
-  computeBottomVertices(n, r) {
-    const vertices = [];
-    for (let i = 0; i < n; i++) {
-      const x = r * Math.cos((2 * Math.PI * i) / n);
-      const y = r * Math.sin((2 * Math.PI * i) / n);
-      vertices.push([+x.toFixed(this.occuracy), +y.toFixed(this.occuracy)]);
-    }
-    return vertices;
-  }
-  /**
    * Возвращает массив с трехмерными координатами основания конуса
-   * @param {number[][]} arr Массив с 3d координатами основания конуса
-   * @return {THREE.Vector3[]}
+   * @param {number[][]} edges Массив с 2d координатами основания конуса
+   * @return {THREE.Vector3[] } Массив с 3d координатами основания конуса
    */
-  get3dVertices(arr) {
+  get3dVertices(edges) {
     const vertices = [];
-    for (let [x, y] of arr) {
+    for (let [x, y] of edges) {
       vertices.push(new THREE.Vector3(x, 0, y));
     }
     vertices.push(new THREE.Vector3(0, this.height, 0));
-    return vertices;
-  }
-  /**
-   * Возвращает массив с двухмерными координатами основания конуса
-   * @param {number[][]} arr Массив с 2d координатами основания конуса
-   * @return {THREE.Vector2[]}
-   */
-  get2dVertices(arr) {
-    const vertices = [];
-    for (let [x, y] of arr) {
-      vertices.push(new THREE.Vector2(x, y));
-    }
     return vertices;
   }
   /**
@@ -95,9 +64,7 @@ export class ConeGenerator {
    *
    * @return { THREE.Face3[]}
    */
-  getBottomFace(bottomVertices) {
-    //
-    const triangles = THREE.ShapeUtils.triangulateShape(bottomVertices, []);
+  getBottomFace(triangles) {
     const bottomFaces = [];
     for (let i = 0; i < triangles.length; i++) {
       bottomFaces.push(
