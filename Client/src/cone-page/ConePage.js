@@ -13,7 +13,11 @@ const ConePage = () => {
   };
 
   const fetchApi = async () => {
-    const response = await fetch('http://localhost:5000/cone', {
+    const url =
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:5000'
+        : 'https://infinite-depths-23650.herokuapp.com';
+    const response = await fetch(`${url}/cone`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
